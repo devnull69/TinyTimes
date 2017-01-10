@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -15,9 +14,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
 
@@ -26,6 +23,7 @@ import org.theiner.tinytimes.context.TinyTimesApplication;
 import org.theiner.tinytimes.data.Kalender;
 import org.theiner.tinytimes.data.Monat;
 import org.theiner.tinytimes.data.Tag;
+import org.theiner.tinytimes.fragments.CaldroidTinyTimesFragment;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -36,7 +34,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CaldroidFragment cfKalender = null;
+    private CaldroidTinyTimesFragment cfKalender = null;
     private TextView txtNetto = null;
     private HashMap<String, Monat> kalenderMonate = new HashMap<String, Monat>();
     private final SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         txtNetto = (TextView) findViewById(R.id.txtNetto);
 
-        cfKalender = new CaldroidFragment();
+        cfKalender = new CaldroidTinyTimesFragment();
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChangeMonth(int month, int year) {
                 DecimalFormat df = new DecimalFormat("00");
                 monatKey = String.valueOf(year) + df.format(month);
-                updateMonat(monatKey);
+                updateView();
             }
 
             // Löschen eines Tages
@@ -138,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     cfKalender.refreshView();
 
-                                    updateMonat(monatKey);
+                                    updateView();
 
                                     app.saveKalender();
 
@@ -166,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
         monatKey = sdf.format(new Date());
 
-        updateMonat(monatKey);
+        updateView();
 
     }
 
@@ -244,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 app.saveKalender();
 
                 // Anzeigen
-                updateMonat(monatKey);
+                updateView();
 
                 cfKalender.refreshView();
             } catch (ParseException e) {
@@ -257,54 +255,30 @@ public class MainActivity extends AppCompatActivity {
 
         if(requestCode == REQUEST_SET_PREFS && resultCode == Activity.RESULT_OK) {
                 // Anzeigen
-                updateMonat(monatKey);
+                updateView();
         }
     }
 
-    private void updateMonat(String monatKey) {
-        ColorDrawable green = new ColorDrawable(getResources().getColor(R.color.colorGreen));
-        ColorDrawable yellow = new ColorDrawable(getResources().getColor(R.color.colorYellow));
-        Drawable redcross = getDrawable(R.drawable.roteskreuz);
+    private void updateView() {
         double summe = 0.0f;
-        try {
-            if (kalenderMonate.containsKey(monatKey)) {
-                Monat monatAktuell = kalenderMonate.get(monatKey);
-                for (int i = 1; i <= 31; i++) {
-                    Tag aktuellerTag = monatAktuell.getTage()[i];
-                    DecimalFormat df = new DecimalFormat("00");
-                    String tag = df.format(i);
-                    String monat = monatKey.substring(4);
-                    String jahr = monatKey.substring(0, 4);
-                    if (aktuellerTag != null) {
-
-                        cfKalender.setBackgroundDrawableForDate(green, formatter.parse(tag + "." + monat + "." + jahr));
-
-                        // Urlaub oder Krank?
-                        switch(aktuellerTag.getTagesart()) {
-                            case URLAUB:
-                                cfKalender.setBackgroundDrawableForDate(yellow, formatter.parse(tag + "." + monat + "." + jahr));
-                                break;
-                            case KRANK:
-                                cfKalender.setBackgroundDrawableForDate(redcross, formatter.parse(tag + "." + monat + "." + jahr));
-                                break;
-                            default:
-                                break;
-                        }
-                        summe += aktuellerTag.getStundensatz() * aktuellerTag.getStundenzahl();
-                    } else {
-                        cfKalender.clearBackgroundDrawableForDate(formatter.parse(tag + "." + monat + "." + jahr));
-                    }
+        if (kalenderMonate.containsKey(monatKey)) {
+            Monat monatAktuell = kalenderMonate.get(monatKey);
+            for (int i = 1; i <= 31; i++) {
+                Tag aktuellerTag = monatAktuell.getTage()[i];
+                if (aktuellerTag != null) {
+                    summe += aktuellerTag.getStundensatz() * aktuellerTag.getStundenzahl();
                 }
             }
-
-            // Summe aktualisieren
-            summe = summe * (1 - app.getPrefData().getSteuerAbzug()/100.0f);  // Abzug
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            DecimalFormat nettoFormat = new DecimalFormat("0.00");
-            txtNetto.setText(nettoFormat.format(summe));
         }
 
+        // Summe aktualisieren
+        summe = summe * (1 - app.getPrefData().getSteuerAbzug()/100.0f);  // Abzug
+        DecimalFormat nettoFormat = new DecimalFormat("0.00");
+        txtNetto.setText(nettoFormat.format(summe));
+
+        // kalenderMonate als extraData an den Adapter übertragen und REFRESH
+        HashMap<String, Object> extraData = (HashMap<String,Object>) cfKalender.getExtraData();
+        extraData.put("kalender", kalenderMonate);
+        cfKalender.refreshView();
     }
 }
