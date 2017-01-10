@@ -12,6 +12,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,9 +21,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.EintragActivity"
+            android:screenOrientation="portrait"
             android:label="@string/stunden_erfassen">
         </activity>
         <activity android:name=".activities.OptionActivity"
+            android:screenOrientation="portrait"
             android:label="@string/optionen">
         </activity>
     </application>
