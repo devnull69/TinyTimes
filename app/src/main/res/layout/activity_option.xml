@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editStundenzahl"
-        android:inputType="numberDecimal"
+        android:inputType="number|numberDecimal|numberSigned"
         android:layout_marginTop="20dp"/>
 
     <TextView
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editStundensatz"
-        android:inputType="numberDecimal"
+        android:inputType="number|numberDecimal|numberSigned"
         android:layout_marginTop="100dp"/>
 
     <TextView
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editSteuerabzug"
-        android:inputType="numberDecimal"
+        android:inputType="number|numberDecimal|numberSigned"
         android:layout_marginTop="180dp"/>
 
     <Button

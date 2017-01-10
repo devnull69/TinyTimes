@@ -1,9 +1,14 @@
 package org.theiner.tinytimes.activities;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,6 +35,8 @@ public class EintragActivity extends AppCompatActivity {
     String datum = "";
 
     private String[] tagesartArray = new String[] {"Normal", "Urlaub", "Krank"};
+
+    private double aktuelleStunden = 0.0f;
 
     private int currentIndex = -1;
 
@@ -59,6 +66,7 @@ public class EintragActivity extends AppCompatActivity {
             // Werte befüllen aus gespeicherten Daten
             double stundenzahl = Math.floor(aktuellerTag.getStundenzahl() * 100.0f + 0.5f) / 100.0f;
             editStundenzahl.setText(String.valueOf(stundenzahl));
+            aktuelleStunden = stundenzahl;
 
             double stundensatz = Math.floor(aktuellerTag.getStundensatz() * 100.0f + 0.5f) / 100.0f;
             editStundensatz.setText(String.valueOf(stundensatz));
@@ -69,6 +77,7 @@ public class EintragActivity extends AppCompatActivity {
             PreferenceData prefData = app.getPrefData();
             double stundenzahl = Math.floor(prefData.getStandardStundenzahl() * 100.0f + 0.5f) / 100.0f;
             editStundenzahl.setText(String.valueOf(stundenzahl));
+            aktuelleStunden = stundenzahl;
 
             double stundensatz = Math.floor(prefData.getStandardStundensatz() * 100.0f + 0.5f) / 100.0f;
             editStundensatz.setText(String.valueOf(stundensatz));
@@ -76,6 +85,7 @@ public class EintragActivity extends AppCompatActivity {
         }
         spnSelectTagesart.setSelection(currentIndex);
 
+        // Änderung der Tagesart
         spnSelectTagesart.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -87,6 +97,25 @@ public class EintragActivity extends AppCompatActivity {
 
             }
         });
+
+        // Änderung der Stundenzahl
+        editStundenzahl.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                aktuelleStunden = Double.parseDouble(editStundenzahl.getText().toString());
+            }
+        });
+
     }
 
     public void onCancel(View view) {
@@ -113,5 +142,36 @@ public class EintragActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         setResult(Activity.RESULT_OK, intent);
         this.finish();
+    }
+
+    public void onAddStunden(View view) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(EintragActivity.this);
+        alertDialog.setTitle("Stunden hinzufügen");
+
+        View editView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.alert_value_layout, null);
+        alertDialog.setView(editView);
+        final EditText valueInput = (EditText) editView.findViewById(R.id.edtValue);
+
+        alertDialog.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        double stunden = Double.parseDouble(valueInput.getText().toString());
+
+                        aktuelleStunden += stunden;
+                        editStundenzahl.setText(String.valueOf(aktuelleStunden));
+
+                        dialog.dismiss();
+                    }
+                });
+
+        alertDialog.setNegativeButton("Abbrechen",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
     }
 }
