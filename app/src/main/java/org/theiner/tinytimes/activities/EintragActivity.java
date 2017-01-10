@@ -112,7 +112,11 @@ public class EintragActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                aktuelleStunden = Double.parseDouble(editStundenzahl.getText().toString());
+                try {
+                    aktuelleStunden = Double.parseDouble(editStundenzahl.getText().toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
