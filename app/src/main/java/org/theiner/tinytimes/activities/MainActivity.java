@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         app = (TinyTimesApplication) getApplicationContext();
 
         // Zum Zurücksetzen des Kalenders
-        //app.resetKalenderInPrefs();
+//        app.resetKalenderInPrefs();
 
         txtNetto = (TextView) findViewById(R.id.txtNetto);
 
@@ -237,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 updateTag.setStundenzahl(aktuellerTag.getStundenzahl());
                 updateTag.setStundensatz(aktuellerTag.getStundensatz());
                 updateTag.setTagesart(aktuellerTag.getTagesart());
+                updateTag.setMarkiert(aktuellerTag.isMarkiert());
 
                 // Speichern
                 app.saveKalender();

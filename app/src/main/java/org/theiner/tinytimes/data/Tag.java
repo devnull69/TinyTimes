@@ -12,6 +12,7 @@ public class Tag implements Serializable{
     private double stundenzahl;
     private double stundensatz;
     private Tagesart tagesart = Tagesart.NORMAL;
+    private boolean markiert = false;
 
     public enum Tagesart {
         @SerializedName("0")
@@ -29,6 +30,14 @@ public class Tag implements Serializable{
         public int getValue() {
             return value;
         }
+    }
+
+    public boolean isMarkiert() {
+        return markiert;
+    }
+
+    public void setMarkiert(boolean markiert) {
+        this.markiert = markiert;
     }
 
     private static final long serialVersionUID = 0L;

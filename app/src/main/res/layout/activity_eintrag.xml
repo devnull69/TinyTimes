@@ -73,10 +73,17 @@
         android:inputType="number|numberDecimal|numberSigned"
         android:layout_marginTop="190dp"/>
 
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Arbeitstag markieren?"
+        android:layout_marginTop="250dp"
+        android:id="@+id/swMarkieren"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="310dp"
         android:text="Ok"
         android:onClick="onSave"
         android:id="@+id/btnOk"/>

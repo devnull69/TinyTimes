@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import org.theiner.tinytimes.R;
@@ -31,6 +32,7 @@ public class EintragActivity extends AppCompatActivity {
     EditText editStundenzahl = null;
     EditText editStundensatz = null;
     Spinner spnSelectTagesart = null;
+    Switch swMarkieren = null;
 
     String datum = "";
 
@@ -57,6 +59,7 @@ public class EintragActivity extends AppCompatActivity {
         editStundenzahl = (EditText) findViewById(R.id.editStundenzahl);
         editStundensatz = (EditText) findViewById(R.id.editStundensatz);
         spnSelectTagesart = (Spinner) findViewById(R.id.spnSelectTagesart);
+        swMarkieren = (Switch) findViewById(R.id.swMarkieren);
 
         final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tagesartArray);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -71,6 +74,8 @@ public class EintragActivity extends AppCompatActivity {
             double stundensatz = Math.floor(aktuellerTag.getStundensatz() * 100.0f + 0.5f) / 100.0f;
             editStundensatz.setText(String.valueOf(stundensatz));
 
+            swMarkieren.setChecked(aktuellerTag.isMarkiert());
+
             currentIndex = aktuellerTag.getTagesart().getValue();
         } else {
             // Werte befüllen aus Default Preferences
@@ -81,6 +86,9 @@ public class EintragActivity extends AppCompatActivity {
 
             double stundensatz = Math.floor(prefData.getStandardStundensatz() * 100.0f + 0.5f) / 100.0f;
             editStundensatz.setText(String.valueOf(stundensatz));
+
+            swMarkieren.setChecked(false);
+
             currentIndex = 0;
         }
         spnSelectTagesart.setSelection(currentIndex);
@@ -133,11 +141,13 @@ public class EintragActivity extends AppCompatActivity {
         double stundenzahl = Double.parseDouble(editStundenzahl.getText().toString());
         double stundensatz = Double.parseDouble(editStundensatz.getText().toString());
         Tag.Tagesart tagesart = Tag.Tagesart.values()[currentIndex];
+        boolean markiert = swMarkieren.isChecked();
 
         Tag neuerTag = new Tag();
         neuerTag.setStundenzahl(stundenzahl);
         neuerTag.setStundensatz(stundensatz);
         neuerTag.setTagesart(tagesart);
+        neuerTag.setMarkiert(markiert);
 
         Intent intent = new Intent();
         Bundle bundle = new Bundle();

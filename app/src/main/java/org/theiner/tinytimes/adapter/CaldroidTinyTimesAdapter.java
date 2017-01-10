@@ -55,11 +55,14 @@ public class CaldroidTinyTimesAdapter extends CaldroidGridAdapter {
 
         TextView tv1 = (TextView) cellView.findViewById(R.id.tv1);
         ImageView iv1 = (ImageView) cellView.findViewById(R.id.iv1);
+        ImageView iv2 = (ImageView) cellView.findViewById(R.id.iv2);
 
         ///
         /// Standard-Werte festlegen
         ///
         tv1.setTextColor(Color.BLACK);
+        iv1.setImageDrawable(null);
+        iv2.setImageDrawable(null);
 
         // Get dateTime of this cell
         DateTime dateTime = this.datetimeList.get(position);
@@ -145,6 +148,9 @@ public class CaldroidTinyTimesAdapter extends CaldroidGridAdapter {
                         iv1.setImageDrawable(resources.getDrawable(R.drawable.roteskreuz));
                         break;
                 }
+
+                if(aktuellerTag.isMarkiert())
+                    iv2.setImageDrawable(resources.getDrawable(R.drawable.mark));
             }
         }
 
