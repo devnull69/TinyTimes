@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         app = (TinyTimesApplication) getApplicationContext();
+
+        // Zum Zurücksetzen des Kalenders
+        //app.resetKalenderInPrefs();
 
         txtNetto = (TextView) findViewById(R.id.txtNetto);
 
@@ -234,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 updateTag.setStundenzahl(aktuellerTag.getStundenzahl());
                 updateTag.setStundensatz(aktuellerTag.getStundensatz());
-                updateTag.setUrlaub(aktuellerTag.isUrlaub());
+                updateTag.setTagesart(aktuellerTag.getTagesart());
 
                 // Speichern
                 app.saveKalender();
@@ -260,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateMonat(String monatKey) {
         ColorDrawable green = new ColorDrawable(getResources().getColor(R.color.colorGreen));
         ColorDrawable yellow = new ColorDrawable(getResources().getColor(R.color.colorYellow));
+        Drawable redcross = getDrawable(R.drawable.roteskreuz);
         double summe = 0.0f;
         try {
             if (kalenderMonate.containsKey(monatKey)) {
@@ -274,9 +279,17 @@ public class MainActivity extends AppCompatActivity {
 
                         cfKalender.setBackgroundDrawableForDate(green, formatter.parse(tag + "." + monat + "." + jahr));
 
-                        // Urlaub?
-                        if(aktuellerTag.isUrlaub())
-                            cfKalender.setBackgroundDrawableForDate(yellow, formatter.parse(tag + "." + monat + "." + jahr));
+                        // Urlaub oder Krank?
+                        switch(aktuellerTag.getTagesart()) {
+                            case URLAUB:
+                                cfKalender.setBackgroundDrawableForDate(yellow, formatter.parse(tag + "." + monat + "." + jahr));
+                                break;
+                            case KRANK:
+                                cfKalender.setBackgroundDrawableForDate(redcross, formatter.parse(tag + "." + monat + "." + jahr));
+                                break;
+                            default:
+                                break;
+                        }
                         summe += aktuellerTag.getStundensatz() * aktuellerTag.getStundenzahl();
                     } else {
                         cfKalender.clearBackgroundDrawableForDate(formatter.parse(tag + "." + monat + "." + jahr));

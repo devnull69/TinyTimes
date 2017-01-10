@@ -22,7 +22,7 @@ android {
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "org.theiner.tinytimes"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 21
         versionCode 1
         versionName "0.9.0"

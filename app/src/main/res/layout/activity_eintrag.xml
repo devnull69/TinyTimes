@@ -24,12 +24,20 @@
         android:textSize="16sp"
         android:text="99.99.9999"/>
 
-    <Switch
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Art des Arbeitstags:"
+        android:layout_marginTop="45dp"
+        android:id="@+id/lblTagesart"/>
+
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Urlaubstag"
-        android:id="@+id/swUrlaubstag"
-        android:layout_marginTop="40dp"/>
+        android:gravity="right"
+        android:id="@+id/spnSelectTagesart"
+        android:layout_alignTop="@+id/lblTagesart"
+        android:layout_marginLeft="170dp"/>
 
     <TextView
         android:layout_width="wrap_content"

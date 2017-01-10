@@ -1,5 +1,7 @@
 package org.theiner.tinytimes.data;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -9,9 +11,35 @@ import java.io.Serializable;
 public class Tag implements Serializable{
     private double stundenzahl;
     private double stundensatz;
-    private boolean isUrlaub;
+    private Tagesart tagesart = Tagesart.NORMAL;
+
+    public enum Tagesart {
+        @SerializedName("0")
+        NORMAL(0),
+        @SerializedName("1")
+        URLAUB(1),
+        @SerializedName("2")
+        KRANK(2);
+
+        private int value;
+        private Tagesart(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
 
     private static final long serialVersionUID = 0L;
+
+    public Tagesart getTagesart() {
+        return tagesart;
+    }
+
+    public void setTagesart(Tagesart tagesart) {
+        this.tagesart = tagesart;
+    }
 
     public double getStundenzahl() {
         return stundenzahl;
@@ -30,10 +58,25 @@ public class Tag implements Serializable{
     }
 
     public boolean isUrlaub() {
-        return isUrlaub;
+        return tagesart == Tagesart.URLAUB;
     }
 
     public void setUrlaub(boolean urlaub) {
-        isUrlaub = urlaub;
+        if(urlaub)
+            tagesart = Tagesart.URLAUB;
+        else
+            tagesart = Tagesart.NORMAL;
     }
+
+    public boolean isKrank() {
+        return tagesart == Tagesart.KRANK;
+    }
+
+    public void setKrank(boolean krank) {
+        if(krank)
+            tagesart = Tagesart.KRANK;
+        else
+            tagesart = Tagesart.NORMAL;
+    }
+
 }

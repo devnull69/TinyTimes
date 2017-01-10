@@ -70,4 +70,12 @@ public class TinyTimesApplication extends Application {
         editor.putString("kalender", gson.toJson(kalender));
         editor.commit();
     }
+
+    public void resetKalenderInPrefs() {
+        SharedPreferences settings = getSharedPreferences(MY_PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+
+        editor.remove("kalender");
+        editor.commit();
+    }
 }
