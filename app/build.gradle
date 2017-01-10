@@ -1,14 +1,31 @@
 apply plugin: 'com.android.application'
 
 android {
+    String propertyName = "AndroidKeystore.properties"
+    Properties props = new Properties()
+    if(project.hasProperty(propertyName)
+            && new File(project.property(propertyName)).exists()) {
+
+        props.load(new FileInputStream(file(project.property(propertyName))))
+    }
+
+    signingConfigs {
+        standardselfsigned {
+            keyAlias props['keyAlias']
+            keyPassword props['keyPassword']
+            storeFile file(props['storeFile'])
+            storePassword props['storePassword']
+        }
+    }
+
     compileSdkVersion 24
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "org.theiner.tinytimes"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 21
         versionCode 1
-        versionName "1.0"
+        versionName "0.9.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
