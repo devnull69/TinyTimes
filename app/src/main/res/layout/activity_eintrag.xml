@@ -37,7 +37,12 @@
         android:gravity="right"
         android:id="@+id/spnSelectTagesart"
         android:layout_alignTop="@+id/lblTagesart"
-        android:layout_marginLeft="170dp"/>
+        android:layout_marginLeft="170dp"
+        android:background="@drawable/gray_border"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="40dp"/>
 
     <TextView
         android:layout_width="wrap_content"

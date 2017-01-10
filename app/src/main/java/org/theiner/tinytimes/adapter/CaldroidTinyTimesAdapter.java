@@ -154,6 +154,8 @@ public class CaldroidTinyTimesAdapter extends CaldroidGridAdapter {
             }
         }
 
+        cellView.setMinimumHeight(cellView.getWidth());
+
         return cellView;
     }
 

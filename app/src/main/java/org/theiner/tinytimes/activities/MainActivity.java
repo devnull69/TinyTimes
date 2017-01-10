@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
         args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
+        args.putBoolean(CaldroidFragment.SQUARE_TEXT_VIEW_CELL, true);
         cfKalender.setArguments(args);
 
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
