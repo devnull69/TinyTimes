@@ -15,6 +15,8 @@ import org.theiner.tinytimes.data.PreferenceData;
 import org.theiner.tinytimes.data.Tag;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class OptionActivity extends AppCompatActivity {
 
@@ -35,15 +37,20 @@ public class OptionActivity extends AppCompatActivity {
         editStundensatz = (EditText) findViewById(R.id.editStundensatz);
         editSteuerabzug = (EditText) findViewById(R.id.editSteuerabzug);
 
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
+        DecimalFormat df = (DecimalFormat)nf;
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
+
         PreferenceData prefData = app.getPrefData();
         double stundenzahl = Math.floor(prefData.getStandardStundenzahl() * 100.0f + 0.5f) / 100.0f;
-        editStundenzahl.setText(String.valueOf(stundenzahl));
+        editStundenzahl.setText(df.format(stundenzahl));
 
         double stundensatz = Math.floor(prefData.getStandardStundensatz() * 100.0f + 0.5f) / 100.0f;
-        editStundensatz.setText(String.valueOf(stundensatz));
+        editStundensatz.setText(df.format(stundensatz));
 
         double steuerabzug = Math.floor(prefData.getSteuerAbzug() * 100.0f + 0.5f) / 100.0f;
-        editSteuerabzug.setText(String.valueOf(steuerabzug));
+        editSteuerabzug.setText(df.format(steuerabzug));
 
     }
 
@@ -52,7 +59,6 @@ public class OptionActivity extends AppCompatActivity {
     }
 
     public void onSave(View view) {
-        DecimalFormat df = new DecimalFormat("0.00");
 
         double stundenzahl = Double.parseDouble(editStundenzahl.getText().toString());
         double stundensatz = Double.parseDouble(editStundensatz.getText().toString());

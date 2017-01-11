@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -279,8 +280,15 @@ public class MainActivity extends AppCompatActivity {
         txtNetto.setText(nettoFormat.format(summe));
 
         // kalenderMonate als extraData an den Adapter übertragen und REFRESH
+        // zusätzlich die ca. Zellengröße
         HashMap<String, Object> extraData = (HashMap<String,Object>) cfKalender.getExtraData();
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        Integer cellwidth = metrics.widthPixels / 7 - 16;
+
         extraData.put("kalender", kalenderMonate);
+        extraData.put("cellwidth", cellwidth);
         cfKalender.refreshView();
     }
 }

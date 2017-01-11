@@ -47,6 +47,7 @@ public class CaldroidTinyTimesAdapter extends CaldroidGridAdapter {
 
         // extraData holen
         HashMap<String, Monat> kalenderMonate = (HashMap<String, Monat>) extraData.get("kalender");
+        Integer cellwidth = (Integer) extraData.get("cellwidth");
 
         int topPadding = cellView.getPaddingTop();
         int leftPadding = cellView.getPaddingLeft();
@@ -154,7 +155,7 @@ public class CaldroidTinyTimesAdapter extends CaldroidGridAdapter {
             }
         }
 
-        cellView.setMinimumHeight(cellView.getWidth());
+        cellView.setMinimumHeight(cellwidth);
 
         return cellView;
     }

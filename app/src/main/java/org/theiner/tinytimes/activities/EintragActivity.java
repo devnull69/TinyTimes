@@ -23,7 +23,11 @@ import org.theiner.tinytimes.data.PreferenceData;
 import org.theiner.tinytimes.data.Tag;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Calendar;
+import java.util.Locale;
+
+import hirondelle.date4j.DateTime;
 
 public class EintragActivity extends AppCompatActivity {
 
@@ -37,6 +41,7 @@ public class EintragActivity extends AppCompatActivity {
     String datum = "";
 
     private String[] tagesartArray = new String[] {"Normal", "Urlaub", "Krank"};
+    private String[] wochentagArray = new String[] {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"};
 
     private double aktuelleStunden = 0.0f;
 
@@ -53,8 +58,12 @@ public class EintragActivity extends AppCompatActivity {
         Tag aktuellerTag = (Tag) extras.getSerializable(MainActivity.TAG_EXTRA_MESSAGE);
         datum = extras.getString(MainActivity.DATUM_EXTRA_MESSAGE);
 
+        // Wochentag ermitteln
+        DateTime dateTime = new DateTime(datum.substring(6) + "-" + datum.substring(3, 5) + "-" + datum.substring(0, 2));
+        int weekday = dateTime.getWeekDay() - 1;
+
         TextView txtDatum = (TextView) findViewById(R.id.txtDatum);
-        txtDatum.setText(datum);
+        txtDatum.setText(wochentagArray[weekday] + " " + datum);
 
         editStundenzahl = (EditText) findViewById(R.id.editStundenzahl);
         editStundensatz = (EditText) findViewById(R.id.editStundensatz);
@@ -65,14 +74,19 @@ public class EintragActivity extends AppCompatActivity {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnSelectTagesart.setAdapter(spinnerAdapter);
 
+        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
+        DecimalFormat df = (DecimalFormat)nf;
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
+
         if(aktuellerTag != null) {
             // Werte befüllen aus gespeicherten Daten
             double stundenzahl = Math.floor(aktuellerTag.getStundenzahl() * 100.0f + 0.5f) / 100.0f;
-            editStundenzahl.setText(String.valueOf(stundenzahl));
+            editStundenzahl.setText(df.format(stundenzahl));
             aktuelleStunden = stundenzahl;
 
             double stundensatz = Math.floor(aktuellerTag.getStundensatz() * 100.0f + 0.5f) / 100.0f;
-            editStundensatz.setText(String.valueOf(stundensatz));
+            editStundensatz.setText(df.format(stundensatz));
 
             swMarkieren.setChecked(aktuellerTag.isMarkiert());
 
@@ -81,11 +95,11 @@ public class EintragActivity extends AppCompatActivity {
             // Werte befüllen aus Default Preferences
             PreferenceData prefData = app.getPrefData();
             double stundenzahl = Math.floor(prefData.getStandardStundenzahl() * 100.0f + 0.5f) / 100.0f;
-            editStundenzahl.setText(String.valueOf(stundenzahl));
+            editStundenzahl.setText(df.format(stundenzahl));
             aktuelleStunden = stundenzahl;
 
             double stundensatz = Math.floor(prefData.getStandardStundensatz() * 100.0f + 0.5f) / 100.0f;
-            editStundensatz.setText(String.valueOf(stundensatz));
+            editStundensatz.setText(df.format(stundensatz));
 
             swMarkieren.setChecked(false);
 
@@ -136,7 +150,6 @@ public class EintragActivity extends AppCompatActivity {
 
     public void onSave(View view) {
         // Wenn alle Werte passen
-        DecimalFormat df = new DecimalFormat("0.00");
 
         double stundenzahl = Double.parseDouble(editStundenzahl.getText().toString());
         double stundensatz = Double.parseDouble(editStundensatz.getText().toString());
