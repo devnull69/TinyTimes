@@ -39,11 +39,11 @@ public class OptionActivity extends AppCompatActivity {
 
         NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
         DecimalFormat df = (DecimalFormat)nf;
-        df.setMaximumFractionDigits(2);
-        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(3);
+        df.setMinimumFractionDigits(3);
 
         PreferenceData prefData = app.getPrefData();
-        double stundenzahl = Math.floor(prefData.getStandardStundenzahl() * 100.0f + 0.5f) / 100.0f;
+        double stundenzahl = Math.floor(prefData.getStandardStundenzahl() * 1000.0f + 0.5f) / 1000.0f;
         editStundenzahl.setText(df.format(stundenzahl));
 
         double stundensatz = Math.floor(prefData.getStandardStundensatz() * 100.0f + 0.5f) / 100.0f;
