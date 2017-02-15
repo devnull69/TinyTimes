@@ -74,19 +74,24 @@ public class EintragActivity extends AppCompatActivity {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnSelectTagesart.setAdapter(spinnerAdapter);
 
-        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
-        DecimalFormat df = (DecimalFormat)nf;
-        df.setMaximumFractionDigits(3);
-        df.setMinimumFractionDigits(3);
+        NumberFormat nf2 = NumberFormat.getNumberInstance(Locale.US);
+        DecimalFormat df2 = (DecimalFormat)nf2;
+        df2.setMaximumFractionDigits(2);
+        df2.setMinimumFractionDigits(2);
+
+        NumberFormat nf3 = NumberFormat.getNumberInstance(Locale.US);
+        DecimalFormat df3 = (DecimalFormat)nf3;
+        df3.setMaximumFractionDigits(3);
+        df3.setMinimumFractionDigits(3);
 
         if(aktuellerTag != null) {
             // Werte befüllen aus gespeicherten Daten
             double stundenzahl = Math.floor(aktuellerTag.getStundenzahl() * 1000.0f + 0.5f) / 1000.0f;
-            editStundenzahl.setText(df.format(stundenzahl));
+            editStundenzahl.setText(df3.format(stundenzahl));
             aktuelleStunden = stundenzahl;
 
             double stundensatz = Math.floor(aktuellerTag.getStundensatz() * 100.0f + 0.5f) / 100.0f;
-            editStundensatz.setText(df.format(stundensatz));
+            editStundensatz.setText(df2.format(stundensatz));
 
             swMarkieren.setChecked(aktuellerTag.isMarkiert());
 
@@ -95,11 +100,11 @@ public class EintragActivity extends AppCompatActivity {
             // Werte befüllen aus Default Preferences
             PreferenceData prefData = app.getPrefData();
             double stundenzahl = Math.floor(prefData.getStandardStundenzahl() * 1000.0f + 0.5f) / 1000.0f;
-            editStundenzahl.setText(df.format(stundenzahl));
+            editStundenzahl.setText(df3.format(stundenzahl));
             aktuelleStunden = stundenzahl;
 
             double stundensatz = Math.floor(prefData.getStandardStundensatz() * 100.0f + 0.5f) / 100.0f;
-            editStundensatz.setText(df.format(stundensatz));
+            editStundensatz.setText(df2.format(stundensatz));
 
             swMarkieren.setChecked(false);
 

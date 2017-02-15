@@ -37,20 +37,25 @@ public class OptionActivity extends AppCompatActivity {
         editStundensatz = (EditText) findViewById(R.id.editStundensatz);
         editSteuerabzug = (EditText) findViewById(R.id.editSteuerabzug);
 
-        NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
-        DecimalFormat df = (DecimalFormat)nf;
-        df.setMaximumFractionDigits(3);
-        df.setMinimumFractionDigits(3);
+        NumberFormat nf2 = NumberFormat.getNumberInstance(Locale.US);
+        DecimalFormat df2 = (DecimalFormat)nf2;
+        df2.setMaximumFractionDigits(2);
+        df2.setMinimumFractionDigits(2);
+
+        NumberFormat nf3 = NumberFormat.getNumberInstance(Locale.US);
+        DecimalFormat df3 = (DecimalFormat)nf3;
+        df3.setMaximumFractionDigits(3);
+        df3.setMinimumFractionDigits(3);
 
         PreferenceData prefData = app.getPrefData();
         double stundenzahl = Math.floor(prefData.getStandardStundenzahl() * 1000.0f + 0.5f) / 1000.0f;
-        editStundenzahl.setText(df.format(stundenzahl));
+        editStundenzahl.setText(df3.format(stundenzahl));
 
         double stundensatz = Math.floor(prefData.getStandardStundensatz() * 100.0f + 0.5f) / 100.0f;
-        editStundensatz.setText(df.format(stundensatz));
+        editStundensatz.setText(df2.format(stundensatz));
 
         double steuerabzug = Math.floor(prefData.getSteuerAbzug() * 100.0f + 0.5f) / 100.0f;
-        editSteuerabzug.setText(df.format(steuerabzug));
+        editSteuerabzug.setText(df2.format(steuerabzug));
 
     }
 
