@@ -18,23 +18,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:text="Netto:"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="Netto:"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:textColor="@color/colorGreen"
+            android:text="123.45"
+            android:id="@+id/txtNetto"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="XX.XX Stunden"
         android:gravity="right"
-        android:textStyle="bold"
-        android:textSize="30sp"
-        android:textColor="@color/colorGreen"
-        android:text="123.45"
-        android:id="@+id/txtNetto"/>
-    </LinearLayout>
+        android:textSize="13sp"
+        android:id="@+id/txtGesamtstunden"/>
 
     <FrameLayout
         android:layout_width="match_parent"

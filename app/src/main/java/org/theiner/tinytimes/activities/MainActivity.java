@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private CaldroidTinyTimesFragment cfKalender = null;
     private TextView txtNetto = null;
+    private TextView txtGesamtstunden = null;
     private HashMap<String, Monat> kalenderMonate = new HashMap<String, Monat>();
     private final SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 //        app.resetKalenderInPrefs();
 
         txtNetto = (TextView) findViewById(R.id.txtNetto);
+        txtGesamtstunden = (TextView) findViewById(R.id.txtGesamtstunden);
 
         cfKalender = new CaldroidTinyTimesFragment();
         Bundle args = new Bundle();
@@ -264,20 +266,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateView() {
         double summe = 0.0f;
+        double stundensumme = 0.0f;
+        double monatsstundensatz = app.getPrefData().getStandardStundensatz();
         if (kalenderMonate.containsKey(monatKey)) {
             Monat monatAktuell = kalenderMonate.get(monatKey);
             for (int i = 1; i <= 31; i++) {
                 Tag aktuellerTag = monatAktuell.getTage()[i];
                 if (aktuellerTag != null) {
-                    summe += aktuellerTag.getStundensatz() * aktuellerTag.getStundenzahl();
+                    //summe += aktuellerTag.getStundensatz() * aktuellerTag.getStundenzahl();
+                    if(aktuellerTag.getStundensatz() != monatsstundensatz)
+                        monatsstundensatz = aktuellerTag.getStundensatz();
+                    stundensumme += aktuellerTag.getStundenzahl();
                 }
             }
         }
 
         // Summe aktualisieren
+        stundensumme = Math.floor(stundensumme * 100.0f + 0.5f) / 100.0f;
+        summe = monatsstundensatz * stundensumme;
         summe = summe * (1 - app.getPrefData().getSteuerAbzug()/100.0f);  // Abzug
         DecimalFormat nettoFormat = new DecimalFormat("0.00");
         txtNetto.setText(nettoFormat.format(summe));
+        txtGesamtstunden.setText(nettoFormat.format(stundensumme) + " Stunden");
 
         // kalenderMonate als extraData an den Adapter übertragen und REFRESH
         // zusätzlich die ca. Zellengröße
