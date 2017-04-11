@@ -20,7 +20,9 @@ public class Tag implements Serializable{
         @SerializedName("1")
         URLAUB(1),
         @SerializedName("2")
-        KRANK(2);
+        KRANK(2),
+        @SerializedName("3")
+        FEIERTAG(3);
 
         private int value;
         private Tagesart(int value) {
@@ -77,6 +79,17 @@ public class Tag implements Serializable{
             tagesart = Tagesart.NORMAL;
     }
 
+    public boolean isFeiertag() {
+        return tagesart == Tagesart.FEIERTAG;
+    }
+
+    public void setFeiertag(boolean feiertag) {
+        if(feiertag)
+            tagesart = Tagesart.FEIERTAG;
+        else
+            tagesart = Tagesart.NORMAL;
+    }
+
     public boolean isKrank() {
         return tagesart == Tagesart.KRANK;
     }
@@ -87,5 +100,7 @@ public class Tag implements Serializable{
         else
             tagesart = Tagesart.NORMAL;
     }
+
+
 
 }

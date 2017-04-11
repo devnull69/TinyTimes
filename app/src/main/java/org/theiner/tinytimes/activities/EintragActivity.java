@@ -40,7 +40,7 @@ public class EintragActivity extends AppCompatActivity {
 
     String datum = "";
 
-    private String[] tagesartArray = new String[] {"Normal", "Urlaub", "Krank"};
+    private String[] tagesartArray = new String[] {"Normal", "Urlaub", "Krank", "Feiertag"};
     private String[] wochentagArray = new String[] {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"};
 
     private double aktuelleStunden = 0.0f;

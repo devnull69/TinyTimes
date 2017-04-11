@@ -148,6 +148,9 @@ public class CaldroidTinyTimesAdapter extends CaldroidGridAdapter {
                         cellView.setBackgroundResource(R.color.caldroid_lighter_gray);
                         iv1.setImageDrawable(resources.getDrawable(R.drawable.roteskreuz));
                         break;
+                    case FEIERTAG:
+                        cellView.setBackgroundColor(resources.getColor(R.color.colorDarkGreen));
+                        break;
                 }
 
                 if(aktuellerTag.isMarkiert())
